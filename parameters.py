@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 from fastapi import FastAPI
 
@@ -13,6 +14,18 @@ def index():
 @app.get('/blog/{id}')
 def blog_id(id:int):
     return {'message' : f'Blog ID is {id}'}
+
+#Path Parameters with Options
+class BlogType(str, Enum):
+    blog = "blog"
+    news = "news"
+    article = "article"
+    short= "short"
+    tutorial = "tutorial"
+
+@app.get('/blog/type/{type}')
+def get_blog_type(type : BlogType):
+    return {'message' : f'Blog Type is {type}'}
 
 #Normal Query Parameters
 @app.get('/blog/all/normal')
@@ -33,3 +46,4 @@ def get_blogs_optional(page=1,page_size:Optional[int]=None):
 @app.get('/blog/{id}/comments/{comment_id}')
 def get_comment(id:int, comment_id:int, valid:bool = True, username:Optional[str]=None):
     return {'message' : f'Blog ID is {id}, Comment ID is {comment_id}, Valid is {valid} and Username is {username}'}
+

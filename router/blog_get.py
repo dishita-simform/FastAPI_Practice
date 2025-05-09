@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import Optional
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response, status, Depends
+
+from router.blog_post import required_function
 
 router = APIRouter(
     prefix="/blog",
@@ -31,8 +33,8 @@ class BlogType(str, Enum):
     tutorial = "tutorial"
 
 @router.get('/type/{type}')
-def get_blog_type(type : BlogType):
-    return {'message' : f'Blog Type is {type}'}
+def get_blog_type(type : BlogType,req_parameter:dict = Depends(required_function)):
+    return {'message' : f'Blog Type is {type}, Required Function is {req_parameter}'}
 
 #Normal Query Parameters
 @router.get('/all/normal', tags=['Parameters'])
